@@ -7,6 +7,7 @@ Script URI: http://wp-quick-install.com
 Version: 1.4.1
 Licence: GPLv3
 Last Update: 08 jan 15
+
 */
 
 @set_time_limit( 0 );
@@ -279,15 +280,18 @@ if ( isset( $_GET['action'] ) ) {
 			/** Load wpdb */
 			require_once( $directory . 'wp-includes/wp-db.php' );
 
+			// Get WordPress language
+			$language = substr( $_POST['language'], 0, 6 );
+
 			// WordPress installation
-			wp_install( $_POST['weblog_title'], $_POST['user_login'], $_POST['admin_email'], (int) $_POST['blog_public'], '', $_POST['admin_password'] );
+			wp_install( $_POST['weblog_title'], $_POST['user_login'], $_POST['admin_email'], (int) $_POST['blog_public'], '', $_POST['admin_password'], $language );
 
 			// We update the options with the right siteurl et homeurl value
 			$protocol = ! is_ssl() ? 'http' : 'https';
-			$get      = basename( dirname( __FILE__ ) ) . '/index.php/wp-admin/install.php?action=install_wp';
+			$get      = basename( dirname( __FILE__ ) );
 			$dir      = str_replace( '../', '', $directory );
 			$link     = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-			$url      = str_replace( $get, $dir, $link );
+			$url      = preg_replace( "#$get.*$#", $dir, $link );
 			$url      = trim( $url, '/' );
 
 			update_option( 'siteurl', $url );
@@ -616,7 +620,7 @@ if ( isset( $_GET['action'] ) ) {
             <h1><?php echo _( 'Warning' ); ?></h1>
             <p><?php echo _( 'This file must be in the wp-quick-install folder and not be present in the root of your project.' ); ?></p>
 
-            <h1><?php echo _( 'Database Informations' ); ?></h1>
+            <h1><?php echo _( 'Database Information' ); ?></h1>
             <p><?php echo _( "Below you should enter your database connection details. If you&#8217;re not sure about these, contact your host." ); ?></p>
 
             <table class="form-table">
@@ -655,7 +659,7 @@ if ( isset( $_GET['action'] ) ) {
                 </tr>
             </table>
 
-            <h1><?php echo _( 'Required Informations' ); ?></h1>
+            <h1><?php echo _( 'Required Information' ); ?></h1>
             <p><?php echo _( 'Thank you to provide the following information. Don\'t worry, you will be able to change it later.' ); ?></p>
 
             <table class="form-table">
@@ -702,9 +706,9 @@ if ( isset( $_GET['action'] ) ) {
                         <p><?php echo _( 'A password will be automatically generated for you if you leave this blank.' ); ?></p>
                     </th>
                     <td>
+						<?php $pw = random_pw( 12 ); // MAM ?>
                         <input name="admin_password" type="password" id="admin_password" size="25" value=""/>
-                        <p><?php echo _( 'Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).' ); ?>
-                            .</p>
+                        <p><?php echo _( 'Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).' . "<br />Suggested Password: " . htmlspecialchars( $pw ) . "<br />Be sure to copy the password to a safe place." ); ?></p>
                     </td>
                 </tr>
                 <tr>
@@ -720,10 +724,10 @@ if ( isset( $_GET['action'] ) ) {
                 </tr>
             </table>
 
-            <h1><?php echo _( 'Theme Informations' ); ?></h1>
+            <h1><?php echo _( 'Theme Information' ); ?></h1>
             <p><?php echo _( 'Enter the information below for your personal theme.' ); ?></p>
             <div class="alert alert-info">
-                <p style="margin:0px; padding:0px;"><?php echo _( 'WP Quick Install will automatically install your theme if it\'s on wp-quick-install folder and named theme.zip' ); ?></p>
+                <p style="margin:0; padding:0;"><?php echo _( 'WP Quick Install will automatically install your theme if it\'s on wp-quick-install folder and named theme.zip' ); ?></p>
             </div>
             <table class="form-table">
                 <tr>
@@ -747,7 +751,7 @@ if ( isset( $_GET['action'] ) ) {
                 </tr>
             </table>
 
-            <h1><?php echo _( 'Extensions Informations' ); ?></h1>
+            <h1><?php echo _( 'Extensions Information' ); ?></h1>
             <p><?php echo _( 'Simply enter below the extensions that should be addend during the installation.' ); ?></p>
             <table class="form-table">
                 <tr>
@@ -756,8 +760,7 @@ if ( isset( $_GET['action'] ) ) {
                         <p><?php echo _( 'The extension slug is available in the url (Ex: http://wordpress.org/extend/plugins/<strong>wordpress-seo</strong>)' ); ?></p>
                     </th>
                     <td>
-                        <input name="plugins" type="text" id="plugins" size="50"
-                               value="wp-website-monitoring; rocket-lazy-load"/>
+                        <input name="plugins" type="text" id="plugins" size="50" value=""/>
                         <p><?php echo _( 'Make sure that the extensions slugs are separated by a semicolon (;).' ); ?></p>
                     </td>
                 </tr>
@@ -780,7 +783,7 @@ if ( isset( $_GET['action'] ) ) {
                 </tr>
             </table>
 
-            <h1><?php echo _( 'Permalinks Informations' ); ?></h1>
+            <h1><?php echo _( 'Permalinks Information' ); ?></h1>
 
             <p><?php echo sprintf( _( 'By default WordPress uses web URLs which have question marks and lots of numbers in them; however, WordPress offers you the ability to create a custom URL structure for your permalinks and archives. This can improve the aesthetics, usability, and forward-compatibility of your links. A <a href="%s">number of tags are available</a>.' ), 'http://codex.wordpress.org/Using_Permalinks' ); ?></p>
 
@@ -797,7 +800,7 @@ if ( isset( $_GET['action'] ) ) {
                 </tr>
             </table>
 
-            <h1><?php echo _( 'Media Informations' ); ?></h1>
+            <h1><?php echo _( 'Media Information' ); ?></h1>
 
             <p><?php echo _( 'Specified dimensions below determine the maximum dimensions (in pixels) to use when inserting an image into the body of an article.' ); ?></p>
 
@@ -855,7 +858,7 @@ if ( isset( $_GET['action'] ) ) {
                 </tr>
             </table>
 
-            <h1><?php echo _( 'wp-config.php Informations' ); ?></h1>
+            <h1><?php echo _( 'wp-config.php Information' ); ?></h1>
             <p><?php echo _( 'Choose below the additional constants you want to add in <strong>wp-config.php</strong>' ); ?></p>
 
             <table class="form-table">
@@ -874,8 +877,7 @@ if ( isset( $_GET['action'] ) ) {
                     </th>
                     <td><label><input type="checkbox" id="disallow_file_edit" name="disallow_file_edit" value="1"
                                       checked='checked'/><?php echo _( 'Disable theme and extensions editor' ); ?>
-                        </label>
-                    </td>
+                        </label></td>
                 </tr>
                 <tr>
                     <th scope="row">
@@ -922,9 +924,9 @@ if ( isset( $_GET['action'] ) ) {
 	<?php
 	} else { ?>
 
-        <div class="alert alert-error" style="margin-bottom: 0px;">
+        <div class="alert alert-error" style="margin-bottom: 0;">
             <strong><?php echo _( 'Warning !' ); ?></strong>
-            <p style="margin-bottom:0px;"><?php echo _( 'You don\'t have the good permissions rights on ' ) . basename( $parent_dir ) . _( '. Thank you to set the good files permissions.' ); ?></p>
+            <p style="margin-bottom:0;"><?php echo _( 'You don\'t have the good permissions rights on ' ) . basename( $parent_dir ) . _( '. Thank you to set the good files permissions.' ); ?></p>
         </div>
 
 		<?php
