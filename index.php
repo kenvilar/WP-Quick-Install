@@ -161,12 +161,12 @@ if ( isset( $_GET['action'] ) ) {
 			$key = 0;
 			foreach ( $config_file as &$line ) {
 
-				if ( '$table_prefix  =' == substr( $line, 0, 16 ) ) {
-					$line = '$table_prefix  = \'' . sanit( $_POST['prefix'] ) . "';\r\n";
+				if ( '$table_prefix =' == substr( $line, 0, 15 ) ) {
+					$line = '$table_prefix = \'' . sanit( $_POST['prefix'] ) . "';\r\n";
 					continue;
 				}
 
-				if ( ! preg_match( '/^define\(\'([A-Z_]+)\',([ ]+)/', $line, $match ) ) {
+				if ( ! preg_match( '/^define\(\s?\'([A-Z_]+)\',([ ]+)/', $line, $match ) ) {
 					continue;
 				}
 
@@ -177,62 +177,62 @@ if ( isset( $_GET['action'] ) ) {
 
 						// Debug mod
 						if ( (int) $_POST['debug'] == 1 ) {
-							$line = "define('WP_DEBUG', 'true');\r\n";
+							$line = "define( 'WP_DEBUG', true );\r\n";
 
 							// Display error
 							if ( (int) $_POST['debug_display'] == 1 ) {
 								$line .= "\r\n\n " . "/** Affichage des erreurs à l'écran */" . "\r\n";
-								$line .= "define('WP_DEBUG_DISPLAY', 'true');\r\n";
+								$line .= "define( 'WP_DEBUG_DISPLAY', true );\r\n";
 							}
 
 							// To write error in a log files
 							if ( (int) $_POST['debug_log'] == 1 ) {
 								$line .= "\r\n\n " . "/** Ecriture des erreurs dans un fichier log */" . "\r\n";
-								$line .= "define('WP_DEBUG_LOG', 'true');\r\n";
+								$line .= "define( 'WP_DEBUG_LOG', true );\r\n";
 							}
 						}
 
 						// We add the extras constant
 						if ( ! empty( $_POST['uploads'] ) ) {
 							$line .= "\r\n\n " . "/** Dossier de destination des fichiers uploadés */" . "\r\n";
-							$line .= "define('UPLOADS', '" . sanit( $_POST['uploads'] ) . "');";
+							$line .= "define( 'UPLOADS', '" . sanit( $_POST['uploads'] ) . "' );";
 						}
 
 						if ( (int) $_POST['post_revisions'] >= 0 ) {
 							$line .= "\r\n\n " . "/** Désactivation des révisions d'articles */" . "\r\n";
-							$line .= "define('WP_POST_REVISIONS', " . (int) $_POST['post_revisions'] . ");";
+							$line .= "define( 'WP_POST_REVISIONS', " . (int) $_POST['post_revisions'] . " );";
 						}
 
 						if ( (int) $_POST['disallow_file_edit'] == 1 ) {
 							$line .= "\r\n\n " . "/** Désactivation de l'éditeur de thème et d'extension */" . "\r\n";
-							$line .= "define('DISALLOW_FILE_EDIT', true);";
+							$line .= "define( 'DISALLOW_FILE_EDIT', true );";
 						}
 
 						if ( (int) $_POST['autosave_interval'] >= 60 ) {
 							$line .= "\r\n\n " . "/** Intervalle des sauvegardes automatique */" . "\r\n";
-							$line .= "define('AUTOSAVE_INTERVAL', " . (int) $_POST['autosave_interval'] . ");";
+							$line .= "define( 'AUTOSAVE_INTERVAL', " . (int) $_POST['autosave_interval'] . " );";
 						}
 
 						if ( ! empty( $_POST['wpcom_api_key'] ) ) {
 							$line .= "\r\n\n " . "/** WordPress.com API Key */" . "\r\n";
-							$line .= "define('WPCOM_API_KEY', '" . $_POST['wpcom_api_key'] . "');";
+							$line .= "define( 'WPCOM_API_KEY', '" . $_POST['wpcom_api_key'] . "' );";
 						}
 
 						$line .= "\r\n\n " . "/** On augmente la mémoire limite */" . "\r\n";
-						$line .= "define('WP_MEMORY_LIMIT', '96M');" . "\r\n";
+						$line .= "define( 'WP_MEMORY_LIMIT', '96M' );" . "\r\n";
 
 						break;
 					case 'DB_NAME'     :
-						$line = "define('DB_NAME', '" . sanit( $_POST['dbname'] ) . "');\r\n";
+						$line = "define( 'DB_NAME', '" . sanit( $_POST['dbname'] ) . "' );\r\n";
 						break;
 					case 'DB_USER'     :
-						$line = "define('DB_USER', '" . sanit( $_POST['uname'] ) . "');\r\n";
+						$line = "define( 'DB_USER', '" . sanit( $_POST['uname'] ) . "' );\r\n";
 						break;
 					case 'DB_PASSWORD' :
-						$line = "define('DB_PASSWORD', '" . sanit( $_POST['pwd'] ) . "');\r\n";
+						$line = "define( 'DB_PASSWORD', '" . sanit( $_POST['pwd'] ) . "' );\r\n";
 						break;
 					case 'DB_HOST'     :
-						$line = "define('DB_HOST', '" . sanit( $_POST['dbhost'] ) . "');\r\n";
+						$line = "define( 'DB_HOST', '" . sanit( $_POST['dbhost'] ) . "' );\r\n";
 						break;
 					case 'AUTH_KEY'         :
 					case 'SECURE_AUTH_KEY'  :
@@ -242,11 +242,11 @@ if ( isset( $_GET['action'] ) ) {
 					case 'SECURE_AUTH_SALT' :
 					case 'LOGGED_IN_SALT'   :
 					case 'NONCE_SALT'       :
-						$line = "define('" . $constant . "', '" . $secret_keys[ $key ++ ] . "');\r\n";
+						$line = "define( '" . $constant . "', '" . $secret_keys[ $key ++ ] . "' );\r\n";
 						break;
 
 					case 'WPLANG' :
-						$line = "define('WPLANG', '" . sanit( $_POST['language'] ) . "');\r\n";
+						$line = "define( 'WPLANG', '" . sanit( $_POST['language'] ) . "' );\r\n";
 						break;
 				}
 			}
