@@ -60,7 +60,7 @@ if ( isset( $_GET['action'] ) ) {
 
 			// DB Test
 			try {
-				$db = new PDO( 'mysql:host=' . $_POST['dbhost'] . ';dbname=' . $_POST['dbname'], $_POST['uname'], $_POST['pwd'] );
+				$db = new PDO( 'mysql:host=' . $_POST['dbhost'] . ';dbname=' . $_POST['dbname'], $_POST['dbname'], $_POST['pwd'] );
 			} catch ( Exception $e ) {
 				$data['db'] = "error etablishing connection";
 			}
@@ -227,7 +227,7 @@ if ( isset( $_GET['action'] ) ) {
 						$line = "define( 'DB_NAME', '" . sanit( $_POST['dbname'] ) . "' );\r\n";
 						break;
 					case 'DB_USER'     :
-						$line = "define( 'DB_USER', '" . sanit( $_POST['uname'] ) . "' );\r\n";
+						$line = "define( 'DB_USER', '" . sanit( $_POST['dbname'] ) . "' );\r\n";
 						break;
 					case 'DB_PASSWORD' :
 						$line = "define( 'DB_PASSWORD', '" . sanit( $_POST['pwd'] ) . "' );\r\n";
@@ -686,11 +686,6 @@ if ( isset( $_GET['action'] ) ) {
                     <th scope="row"><label for="dbname"><?php echo _( 'Database name' ); ?></label></th>
                     <td><input name="dbname" id="dbname" type="text" size="25" value="wordpress" class="required"/></td>
                     <td><?php echo _( 'The name of the database you want to run WP in.' ); ?></td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="uname"><?php echo _( 'Database username' ); ?></label></th>
-                    <td><input name="uname" id="uname" type="text" size="25" value="username" class="required"/></td>
-                    <td><?php echo _( 'Your MySQL username' ); ?></td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="pwd"><?php echo _( 'Password' ); ?></label></th>
