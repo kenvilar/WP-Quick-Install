@@ -628,6 +628,11 @@ if ( isset( $_GET['action'] ) ) {
             <h1><?php echo _( 'Database Information' ); ?></h1>
             <p><?php echo _( "Below you should enter your database connection details. If you&#8217;re not sure about these, contact your host." ); ?></p>
 
+            <!----Database Information---->
+            <input type="hidden" name="dbhost" id="dbhost" value="localhost"/>
+            <input type="hidden" name="default_content" id="default_content" value="1"/>
+            <!----end Database Information---->
+
             <table class="form-table">
                 <tr>
                     <th scope="row"><label for="dbname"><?php echo _( 'Database name' ); ?></label></th>
@@ -645,54 +650,21 @@ if ( isset( $_GET['action'] ) ) {
                     <td><?php echo _( '&hellip;and your MySQL password.' ); ?></td>
                 </tr>
                 <tr>
-                    <th scope="row"><label for="dbhost"><?php echo _( 'Database Host' ); ?></label></th>
-                    <td><input name="dbhost" id="dbhost" type="text" size="25" value="localhost" class="required"/></td>
-                    <td><?php echo _( 'You should be able to get this info from your web host, if <code>localhost</code> does not work.' ); ?></td>
-                </tr>
-                <tr>
                     <th scope="row"><label for="prefix"><?php echo _( 'Table Prefix' ); ?></label></th>
                     <td><input name="prefix" id="prefix" type="text" value="wp_" size="25" class="required"/></td>
                     <td><?php echo _( 'If you want to run multiple WordPress installations in a single database, change this.' ); ?></td>
-                </tr>
-                <tr>
-                    <th scope="row"><label for="default_content"><?php echo _( 'Default content' ); ?></label></th>
-                    <td>
-                        <label><input type="checkbox" name="default_content" id="default_content" value="1"
-                                      checked="checked"/> <?php echo _( 'Delete the content' ) ?></label>
-                    </td>
-                    <td><?php echo _( 'If you want to delete the default content added par WordPress (post, page, comment and links).' ); ?></td>
                 </tr>
             </table>
 
             <h1><?php echo _( 'Required Information' ); ?></h1>
             <p><?php echo _( 'Thank you to provide the following information. Don\'t worry, you will be able to change it later.' ); ?></p>
 
-            <table class="form-table">
-                <tr>
-                    <th scope="row"><label for="language"><?php echo _( 'Language' ); ?></label></th>
-                    <td>
-                        <select id="language" name="language">
-                            <option value="en_US">English (United States)</option>
-							<?php
-							// Get all available languages
-							$languages = json_decode( file_get_contents( 'http://api.wordpress.org/translations/core/1.0/?version=4.0' ) )->translations;
+            <!----Required Information---->
+            <input type="hidden" name="language" id="language" value="en_AU"/>
+            <input type="hidden" name="directory" id="directory" value=""/>
+            <!----end Required Information---->
 
-							foreach ( $languages as $language ) {
-								echo '<option value="' . $language->language . '">' . $language->native_name . '</option>';
-							}
-							?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">
-                        <label for="directory"><?php echo _( 'Installation Folder' ); ?></label>
-                        <p><?php echo _( 'Leave blank to install on the root folder' ); ?></p>
-                    </th>
-                    <td>
-                        <input name="directory" type="text" id="directory" size="25" value=""/>
-                    </td>
-                </tr>
+            <table class="form-table">
                 <tr>
                     <th scope="row"><label for="weblog_title"><?php echo _( 'Site Title' ); ?></label></th>
                     <td><input name="weblog_title" type="text" id="weblog_title" size="25" value="" class="required"/>
@@ -711,7 +683,7 @@ if ( isset( $_GET['action'] ) ) {
                         <p><?php echo _( 'A password will be automatically generated for you if you leave this blank.' ); ?></p>
                     </th>
                     <td>
-						<?php $pw = random_pw( 12 ); // MAM ?>
+						<?php $pw = random_pw( 12 ); ?>
                         <input name="admin_password" type="password" id="admin_password" size="25" value=""/>
                         <p><?php echo _( 'Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).' . "<br />Suggested PW: " . htmlspecialchars( $pw ) . "<br />Be sure to copy the password to a safe place." ); ?></p>
                     </td>
@@ -729,146 +701,32 @@ if ( isset( $_GET['action'] ) ) {
                 </tr>
             </table>
 
-            <h1><?php echo _( 'Theme Information' ); ?></h1>
-            <p><?php echo _( 'Enter the information below for your personal theme.' ); ?></p>
-            <div class="alert alert-info">
-                <p style="margin:0; padding:0;"><?php echo _( 'WP Quick Install will automatically install your theme if it\'s on wp-quick-install folder and named theme.zip' ); ?></p>
-            </div>
-            <table class="form-table">
-                <tr>
-                    <th scope="row">
-                        <label for="activate_theme"><?php echo _( 'Automatic Activation' ); ?></label>
-                    </th>
-                    <td colspan="2">
-                        <label><input type="checkbox" id="activate_theme" name="activate_theme"
-                                      value="1"/> <?php echo _( 'Activate the theme after installing WordPress.' ); ?>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">
-                        <label for="delete_default_themes"><?php echo _( 'Default Themes' ); ?></label>
-                    </th>
-                    <td colspan="2"><label><input type="checkbox" id="delete_default_themes"
-                                                  name="delete_default_themes"
-                                                  value="1"/> <?php echo _( 'Delete the default themes (Twenty Family).' ); ?>
-                        </label></td>
-                </tr>
-            </table>
+            <!----Theme Information---->
+            <input type="hidden" name="activate_theme" id="activate_theme" value="1"/>
+            <input type="hidden" name="delete_default_themes" id="delete_default_themes" value="1"/>
+            <!----end Theme Information---->
 
-            <h1><?php echo _( 'Extensions Information' ); ?></h1>
-            <p><?php echo _( 'Simply enter below the extensions that should be addend during the installation.' ); ?></p>
-            <table class="form-table">
-                <tr>
-                    <th scope="row">
-                        <label for="plugins"><?php echo _( 'Free Extensions' ); ?></label>
-                        <p><?php echo _( 'The extension slug is available in the url (Ex: http://wordpress.org/extend/plugins/<strong>wordpress-seo</strong>)' ); ?></p>
-                    </th>
-                    <td>
-                        <input name="plugins" type="text" id="plugins" size="50" value=""/>
-                        <p><?php echo _( 'Make sure that the extensions slugs are separated by a semicolon (;).' ); ?></p>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">
-                        <label for="plugins"><?php echo _( 'Premium Extensions' ); ?></label>
-                        <p><?php echo _( 'Zip Archives have to be in the <em>plugins</em> folder at the <em>wp-quick-install</em> root folder.' ); ?></p>
-                    </th>
-                    <td><label><input type="checkbox" id="plugins_premium" name="plugins_premium"
-                                      value="1"/> <?php echo _( 'Install the premium extensions after WordPress installation.' ); ?>
-                        </label></td>
-                </tr>
-                <tr>
-                    <th scope="row">
-                        <label for="plugins"><?php echo _( 'Automatic activation' ); ?></label>
-                    </th>
-                    <td><label><input type="checkbox" name="activate_plugins" id="activate_plugins"
-                                      value="1"/> <?php echo _( 'Activate the extensions after WordPress installation.' ); ?>
-                        </label></td>
-                </tr>
-            </table>
+            <!----Extensions Information---->
+            <input type="hidden" name="plugins" id="plugins" value=""/>
+            <input type="hidden" name="plugins_premium" id="plugins_premium" value="1"/>
+            <input type="hidden" name="activate_plugins" id="activate_plugins" value="1"/>
+            <!----end Extensions Information---->
 
-            <h1><?php echo _( 'Permalinks Information' ); ?></h1>
+            <!----Permalinks Information---->
+            <input type="hidden" name="permalink_structure" id="permalink_structure" value="/%postname%/"/>
+            <!----end Permalinks Information---->
 
-            <p><?php echo sprintf( _( 'By default WordPress uses web URLs which have question marks and lots of numbers in them; however, WordPress offers you the ability to create a custom URL structure for your permalinks and archives. This can improve the aesthetics, usability, and forward-compatibility of your links. A <a href="%s">number of tags are available</a>.' ), 'http://codex.wordpress.org/Using_Permalinks' ); ?></p>
-
-            <table class="form-table">
-                <tr>
-                    <th scope="row">
-                        <label for="permalink_structure"><?php echo _( 'Custom Structure' ); ?></label>
-                    </th>
-                    <td>
-                        <code>http://<?php echo $_SERVER['SERVER_NAME']; ?></code>
-                        <input name="permalink_structure" type="text" id="permalink_structure" size="50"
-                               value="/%postname%/"/>
-                    </td>
-                </tr>
-            </table>
-
-            <h1><?php echo _( 'Media Information' ); ?></h1>
-
-            <p><?php echo _( 'Specified dimensions below determine the maximum dimensions (in pixels) to use when inserting an image into the body of an article.' ); ?></p>
-
-            <table class="form-table">
-                <tr>
-                    <th scope="row"><?php echo _( 'Thumbnail sizes' ); ?></th>
-                    <td>
-                        <label for="thumbnail_size_w"><?php echo _( 'Width : ' ); ?></label>
-                        <input name="thumbnail_size_w" style="width:100px;" type="number" id="thumbnail_size_w" min="0"
-                               step="10" value="0" size="1"/>
-                        <label for="thumbnail_size_h"><?php echo _( 'Height : ' ); ?></label>
-                        <input name="thumbnail_size_h" style="width:100px;" type="number" id="thumbnail_size_h" min="0"
-                               step="10" value="0" size="1"/><br>
-                        <label for="thumbnail_crop" class="small-text"><input name="thumbnail_crop" type="checkbox"
-                                                                              id="thumbnail_crop" value="1"
-                                                                              checked="checked"/><?php echo _( 'Resize images to get the exact dimensions' ); ?>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><?php echo _( 'Middle Size' ); ?></th>
-                    <td>
-                        <label for="medium_size_w"><?php echo _( 'Width :' ); ?></label>
-                        <input name="medium_size_w" style="width:100px;" type="number" id="medium_size_w" min="0"
-                               step="10" value="0" size="5"/>
-                        <label for="medium_size_h"><?php echo _( 'Height : ' ); ?></label>
-                        <input name="medium_size_h" style="width:100px;" type="number" id="medium_size_h" min="0"
-                               step="10" value="0" size="5"/><br>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><?php echo _( 'Big Size' ); ?></th>
-                    <td>
-                        <label for="large_size_w"><?php echo _( 'Width : ' ); ?></label>
-                        <input name="large_size_w" style="width:100px;" type="number" id="large_size_w" min="0"
-                               step="10" value="0" size="5"/>
-                        <label for="large_size_h"><?php echo _( 'Height : ' ); ?></label>
-                        <input name="large_size_h" style="width:100px;" type="number" id="large_size_h" min="0"
-                               step="10" value="0" size="5"/><br>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">
-                        <label for="upload_dir"><?php echo _( 'Store uploaded files in this folder' ); ?></label>
-                        <p><?php echo _( 'By default, medias are stored in the <em> wp-content/uploads</em> folder' ); ?></p>
-                    </th>
-                    <td>
-                        <input type="text" id="upload_dir" name="upload_dir" size="46" value=""/><br/>
-                        <label for="uploads_use_yearmonth_folders" class="small-text"><input
-                                    name="uploads_use_yearmonth_folders" type="checkbox"
-                                    id="uploads_use_yearmonth_folders" value="1"
-                                    checked="checked"/><?php echo _( 'Organize my files in monthly and annual folders' ) ?>
-                        </label>
-                    </td>
-                </tr>
-            </table>
+            <!----Media Information---->
+            <input type="hidden" name="upload_dir" id="upload_dir" value=""/>
+            <input type="hidden" name="uploads_use_yearmonth_folders" id="uploads_use_yearmonth_folders" value="1"/>
+            <!----end Media Information---->
 
             <!----wp-config.php Information---->
-            <input type="hidden" name="post_revisions" id="post_revisions" min="0" value="0"/>
-            <input type="hidden" name="disallow_file_edit" id="disallow_file_edit" value="1" checked='checked'/>
-            <input type="hidden" name="autosave_interval" id="autosave_interval" min="60" step="60" size="25" value="7200"/>
-            <input type="hidden" name="debug" id="debug" value="1"/>
-            <input type="hidden" name="wpcom_api_key" id="wpcom_api_key" size="25" value=""/>
+            <input type="hidden" name="post_revisions" id="post_revisions" min="0" value="5"/>
+            <input type="hidden" name="disallow_file_edit" id="disallow_file_edit" value="1"/>
+            <input type="hidden" name="autosave_interval" id="autosave_interval" value="7200"/>
+            <input type="hidden" name="debug" id="debug" value="0"/>
+            <input type="hidden" name="wpcom_api_key" id="wpcom_api_key" value=""/>
             <!----end wp-config.php Information---->
 
             <p class="step"><span id="submit" class="button button-large"><?php echo _( 'Install WordPress' ); ?></span>
