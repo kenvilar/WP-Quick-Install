@@ -45,6 +45,7 @@ if ( file_exists( 'data.ini' ) ) {
 
 // We add  ../ to directory
 $directory = ! empty( $_POST['directory'] ) ? '../' . $_POST['directory'] . '/' : '../';
+$path = ! empty( $_POST['directory'] ) ? '/' . $_POST['directory'] . '/' : '/';
 
 if ( isset( $_GET['action'] ) ) {
 
@@ -138,6 +139,8 @@ if ( isset( $_GET['action'] ) ) {
 				unlink( $directory . '/license.txt' ); // We remove licence.txt
 				unlink( $directory . '/readme.html' ); // We remove readme.html
 				unlink( $directory . '/wp-content/plugins/hello.php' ); // We remove Hello Dolly plugin
+
+				removeDirectory( WPQI_ABSPATH . $path . 'wp-content/plugins/akismet' );
 			}
 
 			break;
@@ -476,8 +479,8 @@ if ( isset( $_GET['action'] ) ) {
 			}
 
 			// Remove default twenty themes
-			rmdir( $directory . 'wp-content/themes/twentynineteen' );
-			rmdir( $directory . 'wp-content/themes/twentyseventeen' );
+			removeDirectory( WPQI_ABSPATH . $path . 'wp-content/themes/twentynineteen' );
+			removeDirectory( WPQI_ABSPATH . $path . 'wp-content/themes/twentyseventeen' );
 
 			break;
 
@@ -487,11 +490,12 @@ if ( isset( $_GET['action'] ) ) {
 			/*	Let's retrieve the plugin folder
 			/*--------------------------*/
 
+			$plugins_dir = $directory . 'wp-content/plugins/';
+
 			if ( ! empty( $_POST['plugins'] ) ) {
 
 				$plugins     = explode( ";", $_POST['plugins'] );
 				$plugins     = array_map( 'trim', $plugins );
-				$plugins_dir = $directory . 'wp-content/plugins/';
 
 				foreach ( $plugins as $plugin ) {
 
@@ -547,9 +551,6 @@ if ( isset( $_GET['action'] ) ) {
 				}
 			}
 
-			// Remove akismet plugin
-			rmdir( $directory . 'wp-content/plugins/akismet' );
-
 			/*--------------------------*/
 			/*	We activate extensions
 			/*--------------------------*/
@@ -589,9 +590,6 @@ if ( isset( $_GET['action'] ) ) {
 			}
 
 			// Link to the admin
-			echo '<input type="button" class="button" onClick="window.location.href = \'' . admin_url() . '\';" value="Log In" formtarget="_blank">';
-			echo '<input type="button" class="button" onClick="window.location.href = \'' . home_url() . '\';" value="Go to website" formtarget="_blank">';
-
 			echo '<a href="' . admin_url() . '" class="button" style="margin-right:5px;" target="_blank">Log In</a>';
 			echo '<a href="' . home_url() . '" class="button" target="_blank">Go to website</a>';
 
