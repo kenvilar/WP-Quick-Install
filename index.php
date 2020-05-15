@@ -12,7 +12,7 @@ Last Update: 08 jan 15
 
 @set_time_limit( 0 );
 
-define( 'WP_API_CORE', 'https://api.wordpress.org/core/version-check/1.7/?locale=' );
+define( 'WP_API_CORE', 'http://api.wordpress.org/core/version-check/1.7/?locale=' );
 define( 'WPQI_CACHE_PATH', 'cache/' );
 define( 'WPQI_CACHE_CORE_PATH', WPQI_CACHE_PATH . 'core/' );
 define( 'WPQI_CACHE_PLUGINS_PATH', WPQI_CACHE_PATH . 'plugins/' );
@@ -20,8 +20,7 @@ define( 'WPQI_CACHE_PLUGINS_PATH', WPQI_CACHE_PATH . 'plugins/' );
 require( 'inc/functions.php' );
 
 // Force URL with index.php
-$requestURI = explode( '/', trim( $_SERVER['REQUEST_URI'], '/' ) );
-if ( empty( $_GET ) && end( $requestURI ) == 'wp-quick-install' ) {
+if ( empty( $_GET ) && end( ( explode( '/', trim( $_SERVER['REQUEST_URI'], '/' ) ) ) ) == 'wp-quick-install' ) {
 	header( 'Location: index.php' );
 	die();
 }
@@ -41,20 +40,6 @@ if ( ! is_dir( WPQI_CACHE_PLUGINS_PATH ) ) {
 $data = array();
 if ( file_exists( 'data.ini' ) ) {
 	$data = json_encode( parse_ini_file( 'data.ini' ) );
-}
-
-function curl_file_get_contents( $URL ) {
-	$c = curl_init();
-	curl_setopt( $c, CURLOPT_RETURNTRANSFER, 1 );
-	curl_setopt( $c, CURLOPT_URL, $URL );
-	$contents = curl_exec( $c );
-	curl_close( $c );
-
-	if ( $contents ) {
-		return $contents;
-	} else {
-		return false;
-	}
 }
 
 // We add  ../ to directory
@@ -95,15 +80,14 @@ if ( isset( $_GET['action'] ) ) {
 			$language = substr( $_POST['language'], 0, 6 );
 
 			// Get WordPress data
-			$wp           = json_decode( curl_file_get_contents( WP_API_CORE . $language ) )->offers[0];
-			$wp->download = str_replace( 'http:', 'https:', $wp->download ); // Prevent http result: 301 - Moved permanently
+			$wp = json_decode( file_get_contents( WP_API_CORE . $language ) )->offers[0];
 
 			/*--------------------------*/
 			/*	We download the latest version of WordPress
 			/*--------------------------*/
 
 			if ( ! file_exists( WPQI_CACHE_CORE_PATH . 'wordpress-' . $wp->version . '-' . $language . '.zip' ) ) {
-				file_put_contents( WPQI_CACHE_CORE_PATH . 'wordpress-' . $wp->version . '-' . $language . '.zip', curl_file_get_contents( $wp->download ) );
+				file_put_contents( WPQI_CACHE_CORE_PATH . 'wordpress-' . $wp->version . '-' . $language . '.zip', file_get_contents( $wp->download ) );
 			}
 
 			break;
@@ -114,7 +98,7 @@ if ( isset( $_GET['action'] ) ) {
 			$language = substr( $_POST['language'], 0, 6 );
 
 			// Get WordPress data
-			$wp = json_decode( curl_file_get_contents( WP_API_CORE . $language ) )->offers[0];
+			$wp = json_decode( file_get_contents( WP_API_CORE . $language ) )->offers[0];
 
 			/*--------------------------*/
 			/*	We create the website folder with the files and the WordPress folder
@@ -167,7 +151,7 @@ if ( isset( $_GET['action'] ) ) {
 			$config_file = file( $directory . 'wp-config-sample.php' );
 
 			// Managing the security keys
-			$secret_keys = explode( "\n", curl_file_get_contents( 'https://api.wordpress.org/secret-key/1.1/salt/' ) );
+			$secret_keys = explode( "\n", file_get_contents( 'https://api.wordpress.org/secret-key/1.1/salt/' ) );
 
 			foreach ( $secret_keys as $k => $v ) {
 				$secret_keys[ $k ] = substr( $v, 28, 64 );
@@ -501,7 +485,7 @@ if ( isset( $_GET['action'] ) ) {
 				foreach ( $plugins as $plugin ) {
 
 					// We retrieve the plugin XML file to get the link to downlad it
-					$plugin_repo = curl_file_get_contents( "http://api.wordpress.org/plugins/info/1.0/$plugin.json" );
+					$plugin_repo = file_get_contents( "http://api.wordpress.org/plugins/info/1.0/$plugin.json" );
 
 					if ( $plugin_repo && $plugin = json_decode( $plugin_repo ) ) {
 
@@ -509,7 +493,7 @@ if ( isset( $_GET['action'] ) ) {
 
 						if ( ! file_exists( $plugin_path ) ) {
 							// We download the lastest version
-							if ( $download_link = curl_file_get_contents( $plugin->download_link ) ) {
+							if ( $download_link = file_get_contents( $plugin->download_link ) ) {
 								file_put_contents( $plugin_path, $download_link );
 							}
 						}
@@ -686,7 +670,7 @@ if ( isset( $_GET['action'] ) ) {
                             <option value="en_US">English (United States)</option>
 							<?php
 							// Get all available languages
-							$languages = json_decode( curl_file_get_contents( 'http://api.wordpress.org/translations/core/1.0/?version=4.0' ) )->translations;
+							$languages = json_decode( file_get_contents( 'http://api.wordpress.org/translations/core/1.0/?version=4.0' ) )->translations;
 
 							foreach ( $languages as $language ) {
 								echo '<option value="' . $language->language . '">' . $language->native_name . '</option>';
@@ -724,7 +708,7 @@ if ( isset( $_GET['action'] ) ) {
                     <td>
 						<?php $pw = random_pw( 12 ); // MAM ?>
                         <input name="admin_password" type="password" id="admin_password" size="25" value=""/>
-                        <p><?php echo _( 'Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).' . "<br />Suggested Password: " . htmlspecialchars( $pw ) . "<br />Be sure to copy the password to a safe place." ); ?></p>
+                        <p><?php echo _( 'Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).' . "<br />Suggested PW: " . htmlspecialchars( $pw ) . "<br />Be sure to copy the password to a safe place." ); ?></p>
                     </td>
                 </tr>
                 <tr>
