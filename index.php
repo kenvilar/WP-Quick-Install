@@ -138,6 +138,13 @@ if ( isset( $_GET['action'] ) ) {
 				unlink( $directory . '/license.txt' ); // We remove licence.txt
 				unlink( $directory . '/readme.html' ); // We remove readme.html
 				unlink( $directory . '/wp-content/plugins/hello.php' ); // We remove Hello Dolly plugin
+
+                // Remove akismet plugin
+				rmdir( $directory . 'wp-content/plugins/akismet' );
+
+				// Remove default twenty themes
+				rmdir( $directory . 'wp-content/themes/twentynineteen' );
+				rmdir( $directory . 'wp-content/themes/twentyseventeen' );
 			}
 
 			break;
@@ -582,8 +589,8 @@ if ( isset( $_GET['action'] ) ) {
 			}
 
 			// Link to the admin
-			echo '<input type="button" class="button" onClick="window.location.href = \'' . admin_url() . '\';" value="' . _( 'Log In' ) . '" formtarget="_blank">';
-			echo '<input type="button" class="button" onClick="window.location.href = \'' . home_url() . '\';" value="' . _( 'Go to website' ) . '" formtarget="_blank">';
+			echo '<input type="button" class="button" onClick="window.location.href = \'' . admin_url() . '\';" value="Log In" formtarget="_blank">';
+			echo '<input type="button" class="button" onClick="window.location.href = \'' . home_url() . '\';" value="Go to website" formtarget="_blank">';
 
 			break;
 	}
