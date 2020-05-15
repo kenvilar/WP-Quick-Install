@@ -2,11 +2,11 @@
 /*
 Script Name: WP Quick Install
 Author: Jonathan Buttigieg
-Contributors: Julio Potier
+Contributors: Ken Vilar
 Script URI: http://wp-quick-install.com
-Version: 1.4.1
+Version: 0.1
 Licence: GPLv3
-Last Update: 08 jan 15
+Last Update: 15 may 2020
 
 */
 
@@ -181,35 +181,35 @@ if ( isset( $_GET['action'] ) ) {
 
 							// Display error
 							if ( (int) $_POST['debug_display'] == 1 ) {
-								$line .= "\r\n\n " . "/** Affichage des erreurs à l'écran */" . "\r\n";
+								$line .= "\r\n\n " . "/** WordPress errors will be displayed on the screen */" . "\r\n";
 								$line .= "define( 'WP_DEBUG_DISPLAY', true );\r\n";
 							}
 
 							// To write error in a log files
 							if ( (int) $_POST['debug_log'] == 1 ) {
-								$line .= "\r\n\n " . "/** Ecriture des erreurs dans un fichier log */" . "\r\n";
+								$line .= "\r\n\n " . "/** Log all the errors into a file */" . "\r\n";
 								$line .= "define( 'WP_DEBUG_LOG', true );\r\n";
 							}
 						}
 
 						// We add the extras constant
 						if ( ! empty( $_POST['uploads'] ) ) {
-							$line .= "\r\n\n " . "/** Dossier de destination des fichiers uploadés */" . "\r\n";
+							$line .= "\r\n\n " . "/** Destination folder for uploaded files */" . "\r\n";
 							$line .= "define( 'UPLOADS', '" . sanit( $_POST['uploads'] ) . "' );";
 						}
 
 						if ( (int) $_POST['post_revisions'] >= 0 ) {
-							$line .= "\r\n\n " . "/** Désactivation des révisions d'articles */" . "\r\n";
+							$line .= "\r\n\n " . "/** Disabling article reviews */" . "\r\n";
 							$line .= "define( 'WP_POST_REVISIONS', " . (int) $_POST['post_revisions'] . " );";
 						}
 
 						if ( (int) $_POST['disallow_file_edit'] == 1 ) {
-							$line .= "\r\n\n " . "/** Désactivation de l'éditeur de thème et d'extension */" . "\r\n";
+							$line .= "\r\n\n " . "/** Deactivation of the theme and extension editor */" . "\r\n";
 							$line .= "define( 'DISALLOW_FILE_EDIT', true );";
 						}
 
 						if ( (int) $_POST['autosave_interval'] >= 60 ) {
-							$line .= "\r\n\n " . "/** Intervalle des sauvegardes automatique */" . "\r\n";
+							$line .= "\r\n\n " . "/** Automatic backup interval */" . "\r\n";
 							$line .= "define( 'AUTOSAVE_INTERVAL', " . (int) $_POST['autosave_interval'] . " );";
 						}
 
@@ -218,8 +218,8 @@ if ( isset( $_GET['action'] ) ) {
 							$line .= "define( 'WPCOM_API_KEY', '" . $_POST['wpcom_api_key'] . "' );";
 						}
 
-						$line .= "\r\n\n " . "/** On augmente la mémoire limite */" . "\r\n";
-						$line .= "define( 'WP_MEMORY_LIMIT', '96M' );" . "\r\n";
+						$line .= "\r\n\n " . "/** Increase the limit memory */" . "\r\n";
+						$line .= "define( 'WP_MEMORY_LIMIT', '128M' );" . "\r\n";
 
 						break;
 					case 'DB_NAME'     :
@@ -453,6 +453,8 @@ if ( isset( $_GET['action'] ) ) {
 
 					// Let's remove the Tweenty family
 					if ( $_POST['delete_default_themes'] == 1 ) {
+						delete_theme( 'twentynineteen' );
+						delete_theme( 'twentyseventeen' );
 						delete_theme( 'twentysixteen' );
 						delete_theme( 'twentyfifteen' );
 						delete_theme( 'twentyfourteen' );

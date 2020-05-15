@@ -344,7 +344,6 @@ $(document).ready(function () {
         $.post(window.location.href + '?action=success', $('form').serialize(), function (data) {
             $('#success').show().append(data);
         });
-        $.get('http://wp-quick-install.com/inc/incr-counter.php');
     }
 
 });
