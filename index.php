@@ -612,7 +612,6 @@ if ( isset( $_GET['action'] ) ) {
             <div class="progress-bar progress-bar-striped active" style="width: 0%;"></div>
         </div>
         <div id="success" style="display:none; margin: 10px 0;">
-            <h1 style="margin: 0"><?php echo _( 'The world is yours' ); ?></h1>
             <p><?php echo _( 'WordPress has been installed.' ); ?></p>
         </div>
         <form method="post" action="">
