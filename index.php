@@ -16,6 +16,7 @@ define( 'WP_API_CORE', 'http://api.wordpress.org/core/version-check/1.7/?locale=
 define( 'WPQI_CACHE_PATH', 'cache/' );
 define( 'WPQI_CACHE_CORE_PATH', WPQI_CACHE_PATH . 'core/' );
 define( 'WPQI_CACHE_PLUGINS_PATH', WPQI_CACHE_PATH . 'plugins/' );
+define( 'WPQI_ABSPATH', $_SERVER['DOCUMENT_ROOT'] );
 
 require( 'inc/functions.php' );
 
