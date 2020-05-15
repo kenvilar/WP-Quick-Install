@@ -296,6 +296,8 @@ if ( isset( $_GET['action'] ) ) {
 
 			update_option( 'siteurl', $url );
 			update_option( 'home', $url );
+			update_option( 'timezone_string', 'UTC+10' );
+			update_option( 'time_format', 'g:i a' );
 
 			/*--------------------------*/
 			/*	We remove the default content
