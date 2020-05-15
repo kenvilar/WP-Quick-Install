@@ -580,11 +580,9 @@ if ( isset( $_GET['action'] ) ) {
 				flush_rewrite_rules();
 			}
 
-			echo '<div id="errors" class="alert alert-danger"><p style="margin:0;"><strong>' . _( 'Warning' ) . '</strong>: Don\'t forget to delete WP Quick Install folder.</p></div>';
-
 			// Link to the admin
-			echo '<a href="' . admin_url() . '" class="button" style="margin-right:5px;" target="_blank">' . _( 'Log In' ) . '</a>';
-			echo '<a href="' . home_url() . '" class="button" target="_blank">' . _( 'Go to website' ) . '</a>';
+			echo '<input type="button" class="button" onClick="window.location.href = \'' . admin_url() . '\';" value="' . _( 'Log In' ) . '" formtarget="_blank">';
+			echo '<input type="button" class="button" onClick="window.location.href = \'' . home_url() . '\';" value="' . _( 'Go to website' ) . '" formtarget="_blank">';
 
 			break;
 	}
