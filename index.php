@@ -138,13 +138,6 @@ if ( isset( $_GET['action'] ) ) {
 				unlink( $directory . '/license.txt' ); // We remove licence.txt
 				unlink( $directory . '/readme.html' ); // We remove readme.html
 				unlink( $directory . '/wp-content/plugins/hello.php' ); // We remove Hello Dolly plugin
-
-                // Remove akismet plugin
-				rmdir( $directory . 'wp-content/plugins/akismet' );
-
-				// Remove default twenty themes
-				rmdir( $directory . 'wp-content/themes/twentynineteen' );
-				rmdir( $directory . 'wp-content/themes/twentyseventeen' );
 			}
 
 			break;
@@ -482,6 +475,10 @@ if ( isset( $_GET['action'] ) ) {
 				}
 			}
 
+			// Remove default twenty themes
+			rmdir( $directory . 'wp-content/themes/twentynineteen' );
+			rmdir( $directory . 'wp-content/themes/twentyseventeen' );
+
 			break;
 
 		case "install_plugins" :
@@ -498,7 +495,7 @@ if ( isset( $_GET['action'] ) ) {
 
 				foreach ( $plugins as $plugin ) {
 
-					// We retrieve the plugin XML file to get the link to downlad it
+					// We retrieve the plugin XML file to get the link to download it
 					$plugin_repo = file_get_contents( "http://api.wordpress.org/plugins/info/1.0/$plugin.json" );
 
 					if ( $plugin_repo && $plugin = json_decode( $plugin_repo ) ) {
@@ -506,7 +503,7 @@ if ( isset( $_GET['action'] ) ) {
 						$plugin_path = WPQI_CACHE_PLUGINS_PATH . $plugin->slug . '-' . $plugin->version . '.zip';
 
 						if ( ! file_exists( $plugin_path ) ) {
-							// We download the lastest version
+							// We download the latest version
 							if ( $download_link = file_get_contents( $plugin->download_link ) ) {
 								file_put_contents( $plugin_path, $download_link );
 							}
@@ -533,7 +530,7 @@ if ( isset( $_GET['action'] ) ) {
 				// We move the archives and we unzip
 				foreach ( $plugins as $plugin ) {
 
-					// We verify if we have to retrive somes plugins via the WP Quick Install "plugins" folder
+					// We verify if we have to retrieve some plugins via the WP Quick Install "plugins" folder
 					if ( preg_match( '#(.*).zip$#', $plugin ) == 1 ) {
 
 						$zip = new ZipArchive;
@@ -549,6 +546,9 @@ if ( isset( $_GET['action'] ) ) {
 					}
 				}
 			}
+
+			// Remove akismet plugin
+			rmdir( $directory . 'wp-content/plugins/akismet' );
 
 			/*--------------------------*/
 			/*	We activate extensions
@@ -591,6 +591,9 @@ if ( isset( $_GET['action'] ) ) {
 			// Link to the admin
 			echo '<input type="button" class="button" onClick="window.location.href = \'' . admin_url() . '\';" value="Log In" formtarget="_blank">';
 			echo '<input type="button" class="button" onClick="window.location.href = \'' . home_url() . '\';" value="Go to website" formtarget="_blank">';
+
+			echo '<a href="' . admin_url() . '" class="button" style="margin-right:5px;" target="_blank">Log In</a>';
+			echo '<a href="' . home_url() . '" class="button" target="_blank">Go to website</a>';
 
 			break;
 	}
