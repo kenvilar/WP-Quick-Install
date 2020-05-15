@@ -12,7 +12,7 @@ Last Update: 08 jan 15
 
 @set_time_limit( 0 );
 
-define( 'WP_API_CORE', 'http://api.wordpress.org/core/version-check/1.7/?locale=' );
+define( 'WP_API_CORE', 'https://api.wordpress.org/core/version-check/1.7/?locale=' );
 define( 'WPQI_CACHE_PATH', 'cache/' );
 define( 'WPQI_CACHE_CORE_PATH', WPQI_CACHE_PATH . 'core/' );
 define( 'WPQI_CACHE_PLUGINS_PATH', WPQI_CACHE_PATH . 'plugins/' );
