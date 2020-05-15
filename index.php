@@ -863,67 +863,18 @@ if ( isset( $_GET['action'] ) ) {
                 </tr>
             </table>
 
-            <h1><?php echo _( 'wp-config.php Information' ); ?></h1>
-            <p><?php echo _( 'Choose below the additional constants you want to add in <strong>wp-config.php</strong>' ); ?></p>
+            <!----wp-config.php Information---->
+            <input type="hidden" name="post_revisions" id="post_revisions" min="0" value="0"/>
+            <input type="hidden" name="disallow_file_edit" id="disallow_file_edit" value="1" checked='checked'/>
+            <input type="hidden" name="autosave_interval" id="autosave_interval" min="60" step="60" size="25" value="7200"/>
+            <input type="hidden" name="debug" id="debug" value="1"/>
+            <input type="hidden" name="wpcom_api_key" id="wpcom_api_key" size="25" value=""/>
+            <!----end wp-config.php Information---->
 
-            <table class="form-table">
-                <tr>
-                    <th scope="row">
-                        <label for="post_revisions"><?php echo _( 'Revisions' ); ?></label>
-                        <p><?php echo _( 'By default, number of post revision is unlimited' ); ?></p>
-                    </th>
-                    <td>
-                        <input name="post_revisions" id="post_revisions" type="number" min="0" value="0"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">
-                        <label for="plugins"><?php echo _( 'Editor' ); ?></label>
-                    </th>
-                    <td><label><input type="checkbox" id="disallow_file_edit" name="disallow_file_edit" value="1"
-                                      checked='checked'/><?php echo _( 'Disable theme and extensions editor' ); ?>
-                        </label></td>
-                </tr>
-                <tr>
-                    <th scope="row">
-                        <label for="autosave_interval"><?php echo _( 'Autosave' ); ?></label>
-                        <p><?php echo _( 'By default, autosave interval is 60 seconds.' ); ?></p>
-                    </th>
-                    <td><input name="autosave_interval" id="autosave_interval" type="number" min="60" step="60"
-                               size="25" value="7200"/> <?php echo _( 'seconds' ); ?></td>
-                </tr>
-                <tr>
-                    <th scope="row">
-                        <label for="debug"><?php echo _( 'Debug Mode' ); ?></label>
-                    </th>
-                    <td>
-                        <label><input type="checkbox" name="debug" id="debug"
-                                      value="1"/> <?php echo _( 'Enable WordPress debug mode</label><p>By checking this box, WordPress will displaying errors</p>' ); ?>
-
-
-                            <div id="debug_options" style="display:none;">
-                                <label><input type="checkbox" name="debug_display" id="debug_display"
-                                              value="1"/> <?php echo _( 'Enable WP Debug' ); ?></label>
-                                <br/>
-                                <label><input type="checkbox" name="debug_log" id="debug_log"
-                                              value="1"/> <?php echo _( 'Write errors in a log file <em>(wp-content/debug.log)</em>. ' ); ?>
-                                </label>
-                            </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">
-                        <label for="wpcom_api_key"><?php echo _( 'WP.com API Key' ); ?></label>
-                    </th>
-                    <td><input name="wpcom_api_key" id="wpcom_api_key" type="text" size="25" value=""/></td>
-                </tr>
-            </table>
             <p class="step"><span id="submit" class="button button-large"><?php echo _( 'Install WordPress' ); ?></span>
             </p>
 
         </form>
-
-        <script src="assets/js/jquery-1.8.3.min.js"></script>
         <script>var data = <?php echo $data; ?>;</script>
         <script src="assets/js/script.js"></script>
 	<?php
