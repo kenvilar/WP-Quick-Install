@@ -288,7 +288,7 @@ if ( isset( $_GET['action'] ) ) {
 
 			// We update the options with the right siteurl et homeurl value
 			$protocol = ! is_ssl() ? 'http' : 'https';
-			$get      = basename( dirname( __FILE__ ) );
+			$get      = basename( dirname( __FILE__ ) ) . '/index.php/wp-admin/install.php?action=install_wp';
 			$dir      = str_replace( '../', '', $directory );
 			$link     = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 			$url      = preg_replace( "#$get.*$#", $dir, $link );
