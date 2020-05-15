@@ -620,56 +620,57 @@ if ( isset( $_GET['action'] ) ) {
                 <strong><?php echo _( 'Warning' ); ?></strong>
             </div>
 
-	        <h1><?php echo _( 'Required Information' ); ?></h1>
+            <h1><?php echo _( 'Required Information' ); ?></h1>
 
-	        <!----Required Information---->
-	        <input type="hidden" name="language" id="language" value="en_AU"/>
-	        <input type="hidden" name="directory" id="directory" value=""/>
-	        <!----end Required Information---->
+            <!----Required Information---->
+            <input type="hidden" name="language" id="language" value="en_AU"/>
+            <input type="hidden" name="directory" id="directory" value=""/>
+            <!----end Required Information---->
 
-	        <table class="form-table">
-		        <tr>
-			        <th scope="row"><label for="weblog_title"><?php echo _( 'Site Title' ); ?></label></th>
-			        <td><input name="weblog_title" type="text" id="weblog_title" size="25" value="" class="required"/>
-			        </td>
-		        </tr>
-		        <tr>
-			        <th scope="row"><label for="site_abbreviation"><?php echo _( 'Site Abbreviation' ); ?></label></th>
-			        <td>
-				        <input name="site_abbreviation" type="text" id="site_abbreviation" size="25" value="" class="required"/>
-				        <p><?php echo _( 'Shortened form of a word or phrase, such as "clubman", "test", and "racetrack"' ); ?></p>
-			        </td>
-		        </tr>
-		        <tr>
-			        <th scope="row"><label for="user_login"><?php echo _( 'Username' ); ?></label></th>
-			        <td>
-				        <input name="user_login" type="text" id="user_login" size="25" value="" class="required"/>
-				        <p><?php echo _( 'Usernames can have only alphanumeric characters, spaces, underscores, hyphens, periods and the @ symbol.' ); ?></p>
-			        </td>
-		        </tr>
-		        <tr>
-			        <th scope="row">
-				        <label for="admin_password"><?php echo _( 'Password' ); ?></label>
-				        <p><?php echo _( 'A password will be automatically generated for you if you leave this blank.' ); ?></p>
-			        </th>
-			        <td>
-				        <?php $pw = random_pw( 12 ); ?>
-				        <input name="admin_password" type="password" id="admin_password" size="25" value=""/>
-				        <p><?php echo _( 'Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).' . "<br />Suggested PW: " . htmlspecialchars( $pw ) . "<br />Be sure to copy the password to a safe place." ); ?></p>
-			        </td>
-		        </tr>
-		        <tr>
-			        <th scope="row"><label for="admin_email"><?php echo _( 'Your E-mail' ); ?></label></th>
-			        <td><input name="admin_email" type="text" id="admin_email" size="25" value="" class="required"/>
-				        <p><?php echo _( 'Double-check your email address before continuing.' ); ?></p></td>
-		        </tr>
-		        <tr>
-			        <th scope="row"><label for="blog_public"><?php echo _( 'Privacy' ); ?></label></th>
-			        <td colspan="2"><label><input type="checkbox" id="blog_public" name="blog_public" value="1"
-			                                      checked="checked"/> <?php echo _( 'Allow search engines to index this site.' ); ?>
-				        </label></td>
-		        </tr>
-	        </table>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="weblog_title"><?php echo _( 'Site Title' ); ?></label></th>
+                    <td><input name="weblog_title" type="text" id="weblog_title" size="25" value="" class="required"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="site_abbreviation"><?php echo _( 'Site Abbreviation' ); ?></label></th>
+                    <td>
+                        <input name="site_abbreviation" type="text" id="site_abbreviation" size="25" value=""
+                               class="required"/>
+                        <p><?php echo _( 'Shortened form of a word or phrase, such as "clubman", "test", and "racetrack"' ); ?></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="user_login"><?php echo _( 'Username' ); ?></label></th>
+                    <td>
+                        <input name="user_login" type="text" id="user_login" size="25" value="" class="required"/>
+                        <p><?php echo _( 'Usernames can have only alphanumeric characters, spaces, underscores, hyphens, periods and the @ symbol.' ); ?></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="admin_password"><?php echo _( 'Password' ); ?></label>
+                        <p><?php echo _( 'A password will be automatically generated for you if you leave this blank.' ); ?></p>
+                    </th>
+                    <td>
+						<?php $pw = random_pw( 12 ); ?>
+                        <input name="admin_password" type="password" id="admin_password" size="25" value=""/>
+                        <p><?php echo _( 'Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).' . "<br />Suggested PW: " . htmlspecialchars( $pw ) . "<br />Be sure to copy the password to a safe place." ); ?></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="admin_email"><?php echo _( 'Your E-mail' ); ?></label></th>
+                    <td><input name="admin_email" type="text" id="admin_email" size="25" value="" class="required"/>
+                        <p><?php echo _( 'Double-check your email address before continuing.' ); ?></p></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="blog_public"><?php echo _( 'Privacy' ); ?></label></th>
+                    <td colspan="2"><label><input type="checkbox" id="blog_public" name="blog_public"
+                                                  value="1"/> <?php echo _( 'Allow search engines to index this site.' ); ?>
+                        </label></td>
+                </tr>
+            </table>
 
             <h1><?php echo _( 'Database Information' ); ?></h1>
 
@@ -729,7 +730,7 @@ if ( isset( $_GET['action'] ) ) {
 
         </form>
 
-		<script src="assets/js/jquery-1.8.3.min.js"></script>
+        <script src="assets/js/jquery-1.8.3.min.js"></script>
         <script>var data = <?php echo $data; ?>;</script>
         <script src="assets/js/script.js"></script>
 	<?php
