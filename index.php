@@ -459,8 +459,9 @@ if ( isset( $_GET['action'] ) ) {
 						switch_theme( $theme_name, $theme_name );
 					}
 
-					// Let's remove the Tweenty family
+					// Let's remove the Twenty family
 					if ( $_POST['delete_default_themes'] == 1 ) {
+						delete_theme( 'twentytwenty' );
 						delete_theme( 'twentynineteen' );
 						delete_theme( 'twentyseventeen' );
 						delete_theme( 'twentysixteen' );
@@ -476,11 +477,11 @@ if ( isset( $_GET['action'] ) ) {
 					delete_theme( '__MACOSX' );
 
 				}
+			} else {
+				// Remove default twenty themes
+				removeDirectory( WPQI_ABSPATH . $path . 'wp-content/themes/twentynineteen' );
+				removeDirectory( WPQI_ABSPATH . $path . 'wp-content/themes/twentyseventeen' );
 			}
-
-			// Remove default twenty themes
-			removeDirectory( WPQI_ABSPATH . $path . 'wp-content/themes/twentynineteen' );
-			removeDirectory( WPQI_ABSPATH . $path . 'wp-content/themes/twentyseventeen' );
 
 			break;
 
